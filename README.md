@@ -1,5 +1,5 @@
 # Database-Management-Web-Application
-How to Test on your settings
+How to Test on your computer
 
 ✅ How to Run the Conference Web Application
 🧳 What’s included in the conference.zip:
