@@ -3,6 +3,9 @@
 
 This is a web-based application built using PHP and MySQL for managing an academic conference. It includes features for attendee registration, session scheduling, sponsor management, and more.
 
+**Video Demo Link:
+[![Watch the demo](https://img.youtube.com/vi/hXhwl1mGloc/0.jpg)](https://www.youtube.com/watch?v=hXhwl1mGloc)
+
 ## Technologies Used
 - PHP (with PDO)
 - MySQL
