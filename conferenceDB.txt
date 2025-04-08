@@ -1,0 +1,223 @@
+
+-- Drop and recreate the database
+DROP DATABASE IF EXISTS ConferenceDB;
+CREATE DATABASE ConferenceDB;
+USE ConferenceDB;
+
+-- Table creation
+CREATE TABLE Committee (
+    committee_id INT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE CommitteeMember (
+    member_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100),
+    committee_id INT,
+    FOREIGN KEY (committee_id) REFERENCES Committee(committee_id)
+);
+
+CREATE TABLE Conference (
+    conference_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE ConferenceRoom (
+    room_id INT PRIMARY KEY,
+    room_number VARCHAR(50),
+    capacity INT
+);
+
+CREATE TABLE HotelRoom (
+    room_id INT PRIMARY KEY,
+    hotel_name VARCHAR(100),
+    room_number VARCHAR(20),
+    capacity INT
+);
+
+CREATE TABLE Student (
+    student_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    department VARCHAR(100),
+    student_number VARCHAR(20)
+);
+
+CREATE TABLE ProfessionalAttendee (
+    pro_id INT PRIMARY KEY,
+    name VARCHAR(100),
+    email VARCHAR(100)
+);
+
+CREATE TABLE Registration (
+    reg_id INT PRIMARY KEY,
+    student_id INT,
+    pro_id INT,
+    amount DECIMAL(10,2),
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (pro_id) REFERENCES ProfessionalAttendee(pro_id)
+);
+
+CREATE TABLE RoomAssignment (
+    assignment_id INT PRIMARY KEY,
+    student_id INT,
+    hotel_room_id INT,
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (hotel_room_id) REFERENCES HotelRoom(room_id)
+);
+
+CREATE TABLE Session (
+    session_id INT PRIMARY KEY,
+    conference_id INT,
+    name VARCHAR(100),
+    date DATE,
+    time TIME,
+    start_end VARCHAR(50),
+    location VARCHAR(100),
+    room_id INT,
+    FOREIGN KEY (conference_id) REFERENCES Conference(conference_id),
+    FOREIGN KEY (room_id) REFERENCES ConferenceRoom(room_id)
+);
+
+CREATE TABLE Speaker (
+    speaker_id INT PRIMARY KEY,
+    name VARCHAR(100)
+);
+
+CREATE TABLE SessionSpeaker (
+    session_id INT,
+    speaker_id INT,
+    PRIMARY KEY (session_id, speaker_id),
+    FOREIGN KEY (session_id) REFERENCES Session(session_id),
+    FOREIGN KEY (speaker_id) REFERENCES Speaker(speaker_id)
+);
+
+CREATE TABLE Sponsor (
+    sponsor_id INT PRIMARY KEY,
+    company_name VARCHAR(100),
+    level VARCHAR(50)
+);
+
+CREATE TABLE Job (
+    job_id INT PRIMARY KEY,
+    title VARCHAR(100),
+    description TEXT,
+    sponsor_id INT,
+    FOREIGN KEY (sponsor_id) REFERENCES Sponsor(sponsor_id)
+);
+
+CREATE TABLE Sponsorship (
+    sponsor_id INT,
+    conference_id INT,
+    amount DECIMAL(10,2),
+    PRIMARY KEY (sponsor_id, conference_id),
+    FOREIGN KEY (sponsor_id) REFERENCES Sponsor(sponsor_id),
+    FOREIGN KEY (conference_id) REFERENCES Conference(conference_id)
+);
+
+
+-- Insert Committees
+INSERT INTO Committee (committee_id, name) VALUES
+(1, 'Registration'),
+(2, 'Logistics'),
+(3, 'Tech Support'),
+(7, 'Media & PR'),
+(8, 'Venue Management'),
+(9, 'Volunteer Coordination');
+
+-- Insert Committee Members
+INSERT INTO CommitteeMember (member_id, name, email, committee_id) VALUES
+(1, 'Bradley Johnson', 'bjohnson@queensu.ca', 1),
+(2, 'Carla White', 'cwhite@queensu.ca', 2),
+(3, 'David Black', 'dblack@queensu.ca', 2),
+(4, 'Emma Green', 'egreen@queensu.ca', 3),
+(5, 'Frank Lee', 'flee@queensu.ca', 3),
+(19, 'Bob Smith', 'bsmith@queensu.ca', 1),
+(20, 'Alice Cooperson', 'acooperson@queensu.ca', 2),
+(21, 'Jacky Chen', 'jchen@queensu.ca', 3),
+(22, 'Neil Smith', 'nsmith@queensu.ca', 7),
+(23, 'Benjamin Moore', 'bmoore@queensu.ca', 8),
+(24, 'Abraham Lincoln', 'alincoln@queensu.ca', 9);
+
+-- Insert Conferences
+INSERT INTO Conference (conference_id, name) VALUES
+(1, 'Tech Conference 2025'),
+(2, 'AI World Forum'),
+(3, 'Tech Conference 2025'),
+(4, 'AI World Forum');
+
+-- Insert Conference Rooms
+INSERT INTO ConferenceRoom (room_id, room_number, capacity) VALUES
+(1, 'Main Hall', 100),
+(2, 'Room 201', 50),
+(3, 'Cafeteria', 80),
+(4, 'Room A', 60);
+
+-- Insert Hotel Rooms
+INSERT INTO HotelRoom (room_id, hotel_name, room_number, capacity) VALUES
+(7, 'Hilton', '101A', 2),
+(8, 'Hilton', '101B', 2),
+(9, 'Marriott', '202A', 3);
+
+-- Insert Sponsors
+INSERT INTO Sponsor (sponsor_id, company_name, level) VALUES
+(9, 'Microsoft', 'Gold'),
+(11, 'Amazon', 'Silver'),
+(13, 'OpenAI', 'Bronze'),
+(14, 'AMD', 'Gold');
+
+-- Insert Professional Attendees
+INSERT INTO ProfessionalAttendee (pro_id, name, email) VALUES
+(1, 'Sarah Wells', 'sarahwells@microsoft.com'),
+(2, 'Derek Moon', 'derekmoon@amd.com'),
+(3, 'Felix Stone', 'felixstone@utoronto.com');
+
+-- Insert Jobs
+INSERT INTO Job (job_id, sponsor_id, title, description) VALUES
+(10, 9, 'Software Engineer', 'Build and maintain web applications.'),
+(11, 9, 'Cloud Consultant', 'Advise clients on cloud migration.'),
+(13, 11, 'Financial Analyst', 'Analyze and model financial data.');
+
+-- Insert Students
+INSERT INTO Student (student_id, name, department, student_number) VALUES
+(10, 'Jane Smith', 'Finance', '82015647'),
+(11, 'Liam West', 'Physics', '73190526'),
+(9, 'John Doe', 'Computer Science', '38422915'),
+(25, 'James Choi', 'Computer Science', '20229887'),
+(12, 'Maya Patel', 'Engineering', '19746283');
+
+-- Insert Room Assignments
+INSERT INTO RoomAssignment (assignment_id, student_id, hotel_room_id) VALUES
+(13, 9, 7),
+(14, 10, 8),
+(15, 11, 9),
+(28, 12, 9),
+(30, 25, 9);
+
+-- Insert Registration
+INSERT INTO Registration (reg_id, student_id, pro_id, amount) VALUES
+(3, NULL, 1, 75.00),
+(4, NULL, 2, 75.00),
+(5, 12, NULL, 100.00);
+
+-- Insert Speakers
+INSERT INTO Speaker (speaker_id, name) VALUES
+(1, 'Dr. Alice'),
+(2, 'Mr. Bob'),
+(3, 'Sally Stone'),
+(4, 'Zara Quantum');
+
+-- Insert Sessions
+INSERT INTO Session (session_id, conference_id, name, date, time, start_end, location, room_id) VALUES
+(1, 1, 'Opening Keynote', '2025-04-01', '09:00:00', '09:00–10:00', 'Main Hall', 1),
+(2, 2, 'Cloud Panel', '2025-04-01', '11:00:00', '11:00–12:30', 'Room 201', 3),
+(3, 1, 'Networking Lunch', '2025-04-01', '13:00:00', '13:00–14:00', 'Cafeteria', 4),
+(4, 2, 'AI Ethics', '2025-04-02', '10:00:00', '10:00–11:30', 'Room A', 2),
+(5, 2, 'Closing Keynote', '2025-04-02', '15:00:00', '15:00–16:00', 'Main Hall', NULL);
+
+-- Insert Session Speakers
+INSERT INTO SessionSpeaker (session_id, speaker_id) VALUES
+(1, 1),
+(2, 2),
+(4, 3),
+(5, 4);
