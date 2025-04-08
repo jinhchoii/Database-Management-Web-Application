@@ -3,12 +3,6 @@
 
 This is a web-based application built using PHP and MySQL for managing an academic conference. It includes features for attendee registration, session scheduling, sponsor management, and more.
 
-## Setup Instructions
-1. Clone the repository
-2. Import `conferenceDB.sql` into your MySQL using phpMyAdmin
-3. Run the project in XAMPP (place in `htdocs/`)
-4. Access it at: http://localhost/conference/conference.php
-
 ## Technologies Used
 - PHP (with PDO)
 - MySQL
@@ -16,7 +10,7 @@ This is a web-based application built using PHP and MySQL for managing an academ
 - XAMPP / phpMyAdmin
 
 
-How to Test on your computer
+## Setup Instructions
 
 ✅ How to Run the Conference Web Application
 🧳 What’s included in the conference.zip:
